@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="دليل شامل لتعلم لغة Swift — 18 قسم و38 درس مع أمثلة كود حقيقية">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>Learn Swift</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700;800;900&display=swap" 
+    rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" 
+    rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        orange: { 450: '#FF5A1F', 500: '#F74E09', 600: '#D93D00' },
+                        neutral: { 850: '#1a1a1a', 900: '#0a0a0a', 950: '#050505' }
+                    }
+                },
+                safelist: [
+                    'mr-[52px]', 'line-through', 'completion-badge',
+                    'border-green-500/20', 'border-green-500/30',
+                    'bg-green-500/[0.02]', 'bg-cyan-500/10', 'bg-blue-500/10', 'bg-purple-500/10',
+                    'border-cyan-500/30', 'border-blue-500/30', 'border-purple-500/30',
+                    'text-cyan-400', 'text-blue-400', 'text-purple-400'
+                ]
+            }
+        }
+    </script>
+</head>
+<body class="bg-neutral-900 text-white overflow-x-hidden">
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-20 left-6 z-[100] flex flex-col gap-3"></div>
+
+    <!-- Back to Top -->
+    <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+     class="fixed bottom-6 left-6 w-11 h-11 rounded-full bg-orange-500 text-white 
+     flex items-center justify-center shadow-lg opacity-0 pointer-events-none transition-all
+     duration-300 hover:scale-110 z-50" 
+     style="box-shadow: 0 0 20px rgba(247,78,9,0.3);"><i data-lucide="arrow-up" class="w-5 h-5"></i>
+    </button>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50" style="background: rgba(10,10,10,0.85); backdrop-filter: blur(12px);">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 flex items-center justify-center">
+    <img src="Swift-logo.svg" alt="Logo" class="h-8 w-auto"></div>
+                <span class="text-lg font-bold tracking-tight hidden sm:block">تعلّم Swift</span>
+            </div>
+            <div class="hidden lg:flex items-center gap-6">
+                <a href="#hero" class="nav-link text-sm text-neutral-400 hover:text-white">الرئيسية</a>
+                <a href="#content" class="nav-link text-sm text-neutral-400 hover:text-white">المحتوى</a>
+                <a href="#resources" class="nav-link text-sm text-neutral-400 hover:text-white">المصادر</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-16 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                        <div id="nav-bar" class="h-full bg-orange-500 rounded-full transition-all 
+                        duration-700" style="width:0%"></div>
+                    </div>
+                    <span class="text-xs text-neutral-400 hidden sm:block"><span id="nav-pct" class="text-orange-500 font-bold">0%</span></span>
+                </div>
+                <button onclick="resetAll()" class="text-xs px-2.5 py-1 rounded-lg border border-white/10 text-neutral-400 hover:text-white transition-all">مسح</button>
+<div class="theme-toggle-group">
+    <button onclick="setTheme('light')" class="theme-btn" data-theme-btn="light" title="فاتح">
+        <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+    </button>
+    <button onclick="setTheme('dark')" class="theme-btn" data-theme-btn="dark" title="داكن">
+        <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+    </button>
+    <button onclick="setTheme('night')" class="theme-btn" data-theme-btn="night" title="ليلي">
+        <i data-lucide="cloud-moon" class="w-3.5 h-3.5"></i>
+    </button>
+</div>
+<button id="mob-btn" class="lg:hidden text-white" onclick="document.getElementById('mob-menu').classList.toggle('hidden')">
+            </div>
+        </div>
+        <div id="mob-menu" class="hidden lg:hidden px-4 pb-4 border-t border-white/5">
+            <a href="#hero" class="block text-sm text-neutral-400 py-2 mob-link">الرئيسية</a>
+            <a href="#content" class="block text-sm text-neutral-400 py-2 mob-link">المحتوى</a>
+            <a href="#resources" class="block text-sm text-neutral-400 py-2 mob-link">المصادر</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="relative min-h-[70vh] flex items-center justify-center pt-20 pb-16 px-4 overflow-hidden">
+        <div class="absolute top-1/4 right-1/4 w-72 h-72 bg-orange-500 opacity-10 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-96 h-96 bg-orange-600 opacity-5 rounded-full blur-3xl animate-float-reverse"></div>
+        <div class="text-center relative z-10 max-w-3xl mx-auto">
+            <h1 class="animate-fade-in-up text-5xl sm:text-6xl md:text-7xl font-black leading-[0.9] tracking-tight uppercase mb-6" style="animation-delay:0.1s">تعلّم<br><span class="bg-gradient-to-l from-orange-400 to-orange-600 bg-clip-text text-transparent">Swift</span></h1>
+            <p class="animate-fade-in-up text-neutral-400 text-lg mb-8 leading-relaxed" style="animation-delay:0.2s">لغة Swift هي لغة برمجة حديثة وقوية، طورت بواسطة شركة أبل وأطلقت في 2014.<br> صُممت لتكون اللغة الرسمية لتطوير تطبيقات iOS و macOS و watchOS و tvOS و visionOS.<br>شرح مفصّل مع أمثلة كود حقيقية لكل مفهوم — 18 قسم يشمل 36 درس</p>
+            <div class="animate-fade-in-up flex flex-col sm:flex-row items-center justify-center gap-4" style="animation-delay:0.3s">
+                <a href="#content" class="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-bold rounded-2xl hover:scale-105 transition-all" style="box-shadow: 0 0 20px rgba(247,78,9,0.3);">ابدأ التعلم <i data-lucide="arrow-down" class="w-5 h-5"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section id="content" class="py-16 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-10 rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden" id="toc-section">
+                <button onclick="toggleTOC()" class="w-full p-5 md:p-6 flex items-center justify-between text-right" aria-expanded="true" id="toc-toggle-btn">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center"><i data-lucide="list" class="w-5 h-5 text-orange-400"></i></div>
+                        <div><h3 class="font-bold text-lg">فهرس المحتوى</h3><p class="text-xs text-neutral-500 mt-0.5"><span id="toc-done">0</span> من <span id="toc-total">0</span> درس مكتمل</p></div>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-neutral-500 transition-transform duration-300" id="toc-chev"></i>
+                </button>
+                <div class="toc-expand open" id="toc-body">
+                    <div class="px-5 md:px-6 pb-5 md:pb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 toc-grid" id="toc-grid"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="main-content"></div>
+        </div>
+    </section>
+
+    <!-- Resources -->
+    <section id="resources" class="py-20 px-4 border-t border-white/5">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <span class="inline-block px-4 py-1.5 rounded-full text-sm text-orange-400 font-semibold mb-4" style="background: linear-gradient(135deg, rgba(247,78,9,0.2), rgba(217,61,0,0.1)); border: 1px solid rgba(247,78,9,0.3);">المكتبة</span>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight mb-3">مصادر التعلم</h2>
+                <p class="text-neutral-400 text-lg">كل مصدر فيه لينك مباشر — اضغط وابدأ فوراً</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-2 mb-10" id="res-filters">
+                <button onclick="filterRes('all')" class="res-filter active px-4 py-2 rounded-full text-sm font-semibold border border-white/10 bg-white/5 text-white transition-all" data-filter="all">الكل</button>
+                <button onclick="filterRes('free')" class="res-filter px-4 py-2 rounded-full text-sm font-semibold border border-white/10 text-neutral-400 hover:text-white transition-all" data-filter="free">مجاني</button>
+                <button onclick="filterRes('video')" class="res-filter px-4 py-2 rounded-full text-sm font-semibold border border-white/10 text-neutral-400 hover:text-white transition-all" data-filter="video">فيديو</button>
+                <button onclick="filterRes('official')" class="res-filter px-4 py-2 rounded-full text-sm font-semibold border border-white/10 text-neutral-400 hover:text-white transition-all" data-filter="official">رسمي</button>
+                <button onclick="filterRes('ar')" class="res-filter px-4 py-2 rounded-full text-sm font-semibold border border-white/10 text-neutral-400 hover:text-white transition-all" data-filter="ar">عربي</button>
+                <button onclick="filterRes('paid')" class="res-filter px-4 py-2 rounded-full text-sm font-semibold border border-white/10 text-neutral-400 hover:text-white transition-all" data-filter="paid">مدفوع</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="res-grid">
+                <a href="https://docs.swift.org/swift-book/" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free,official"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="book-open" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">The Swift Programming Language</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">الكتاب الرسمي من Apple — المرجع الأول والأهم للغة.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span><span class="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold">رسمي</span></div><span class="resource-link text-orange-400 text-sm font-semibold">docs.swift.org/swift-book <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://developer.apple.com/tutorials/app-dev-training/" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free,official"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="map" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">App Dev Tutorials</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">Learn the basics of Xcode, SwiftUI, and UIKit to create compelling apps</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span><span class="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold">رسمي</span></div><span class="resource-link text-orange-400 text-sm font-semibold">developer.apple.com/tutorials/app-dev-training<i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://developer.apple.com/tutorials/swiftui" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free,official"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="layout" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">Apple SwiftUI Tutorials</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">توتوريالات رسمية من Apple لتعلم SwiftUI.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span><span class="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold">رسمي</span></div><span class="resource-link text-orange-400 text-sm font-semibold">developer.apple.com/tutorials/swiftui <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://developer.apple.com/tutorials/develop-in-swift/" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free,official"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="file-text" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">Develop in Swift Tutorials</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">Develop in Swift Tutorials introduce app development with Swift and Xcode to anyone learning to build apps for Apple platforms</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span><span class="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold">رسمي</span></div><span class="resource-link text-orange-400 text-sm font-semibold">developer.apple.com/swift <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://cs193p.sites.stanford.edu/" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="graduation-cap" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">Stanford CS193p</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">كورس تطوير iOS من جامعة Stanford.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span><span class="px-2.5 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-semibold">جامعي</span></div><span class="resource-link text-orange-400 text-sm font-semibold">cs193p.sites.stanford.edu <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://www.youtube.com/playlist?list=PLpGHT1n4-mAtTj9oywMWoBx0dCGd51_yG" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free,video"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="graduation-cap" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">CS193p على YouTube</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">بلاي لست كاملة لمحاضرات Stanford بالفيديو.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span><span class="px-2.5 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-semibold">فيديو</span></div><span class="resource-link text-orange-400 text-sm font-semibold">YouTube — CS193p <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://www.hackingwithswift.com/100/swiftui" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="code-2" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">100 Days of SwiftUI</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">تحدي 100 يوم لتعلم SwiftUI بمشاريع يومية.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span><span class="px-2.5 py-1 rounded-full bg-orange-500/10 text-orange-400 text-xs font-semibold">مشروعي</span></div><span class="resource-link text-orange-400 text-sm font-semibold">hackingwithswift.com/100/swiftui <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://www.hackingwithswift.com/100/" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="code-2" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">100 Days of Swift</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">تحدي 100 يوم للغة Swift نفسها. ممتاز للمبتدئين.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span></div><span class="resource-link text-orange-400 text-sm font-semibold">hackingwithswift.com/100/swift <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://www.youtube.com/@%D8%A8%D8%A7%D9%85%D8%A8%D8%B1%D9%85%D8%AC/courses" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free,video,ar"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="play-circle" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">بامبرمج — YouTube</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">دورة شاملة بالعربية من الأساسيات حتى App Store.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span><span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold">عربي</span></div><span class="resource-link text-orange-400 text-sm font-semibold">youtube.com/@بامبرمج <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://www.youtube.com/c/SeanAllen" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free,video"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="play-circle" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">Sean Allen — YouTube</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">شرح Swift و SwiftUI بطريقة بسيطة وممتعة.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span></div><span class="resource-link text-orange-400 text-sm font-semibold">youtube.com/@SeanAllen <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://www.youtube.com/c/CodeWithChris" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free,video"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="play-circle" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">CodeWithChris — YouTube</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">محتوى iOS development للمبتدئين والمتوسطين.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span></div><span class="resource-link text-orange-400 text-sm font-semibold">youtube.com/@CodeWithChris <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://www.youtube.com/c/iOSAcademy" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free,video">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="play-circle" class="w-6 h-6 text-white"></i></div>
+                    <h3 class="text-lg font-bold mb-2">iOS Academy — YouTube</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed mb-4">مشاريع كاملة من الصفر: Twitter clone, Instagram clone, وغيرها. ممتاز بعد ما تتعلم الأساسيات.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span>
+                        <span class="px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-semibold">مشاريع</span>
+                    </div>
+                    <span class="resource-link text-orange-400 text-sm font-semibold">youtube.com/@iOSAcademy <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span>
+                </a>
+                <a href="https://www.udemy.com/course/ios-13-app-development-bootcamp/" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="paid"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="code" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">Dr. Angela Yu — iOS & SwiftUI</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">+60 ساعة فيديو، +20 مشروع. اشتريه في الـ sale بـ $15-$20.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-yellow-500/10 text-yellow-400 text-xs font-semibold">مدفوع</span><span class="px-2.5 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-semibold">شامل</span></div><span class="resource-link text-orange-400 text-sm font-semibold">udemy.com — Angela Yu <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://www.reddit.com/r/iOSProgramming/" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="users" class="w-6 h-6 text-white"></i></div>
+                    <h3 class="text-lg font-bold mb-2">r/iOSProgramming — Reddit</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed mb-4">مجتمع أوسع لتطوير iOS بشكل عام. نصائح مهنية، أسئلة تقنية، ومناقشات عن الـ industry.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span>
+                        <span class="px-2.5 py-1 rounded-full bg-lime-500/10 text-lime-400 text-xs font-semibold">مجتمع</span>
+                    </div>
+                    <span class="resource-link text-orange-400 text-sm font-semibold">reddit.com/r/iOSProgramming <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span>
+                </a>
+                <a href="https://www.reddit.com/r/SwiftUI/" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="message-circle" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">r/SwiftUI — Reddit</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">مجتمع نشط لأسئلة ومناقشات SwiftUI.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span></div><span class="resource-link text-orange-400 text-sm font-semibold">reddit.com/r/SwiftUI <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://github.com/search?q=language%3ASwift&topic=swiftui" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="git-branch" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">SwiftUI على GitHub</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">اقرأ كود مشاريع مفتوحة المصدر وتعلم من الناس المهنية.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span></div><span class="resource-link text-orange-400 text-sm font-semibold">github.com — SwiftUI <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+                <a href="https://stackoverflow.com/questions/tagged/swift" target="_blank" rel="noopener noreferrer" class="resource-card block p-7 rounded-3xl bg-white/[0.03] border border-white/10 no-underline text-inherit" data-tags="free"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-5"><i data-lucide="help-circle" class="w-6 h-6 text-white"></i></div><h3 class="text-lg font-bold mb-2">Stack Overflow — Swift</h3><p class="text-neutral-400 text-sm leading-relaxed mb-4">99% من المشاكل اللي هتواجهها موجودة هنا.</p><div class="flex flex-wrap gap-2 mb-4"><span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">مجاني</span></div><span class="resource-link text-orange-400 text-sm font-semibold">stackoverflow.com/tagged/swift <i data-lucide="external-link" class="w-3.5 h-3.5 link-icon"></i></span></a>
+            </div>
+            <div class="mt-12 p-6 rounded-3xl bg-white/[0.03] border border-white/10">
+                <h3 class="font-bold text-lg mb-4">وصول سريع — أهم 3 مصادر تبدأ بيهم</h3>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="https://docs.swift.org/swift-book/" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-orange-500 text-white font-bold text-sm hover:bg-orange-600 transition-colors no-underline"><i data-lucide="book-open" class="w-4 h-4"></i> الكتاب الرسمي <i data-lucide="external-link" class="w-3.5 h-3.5 opacity-60"></i></a>
+                    <a href="https://www.hackingwithswift.com/100/swiftui" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-white/20 text-white font-bold text-sm hover:bg-white/5 transition-colors no-underline"><i data-lucide="zap" class="w-4 h-4"></i> 100 Days of SwiftUI <i data-lucide="external-link" class="w-3.5 h-3.5 opacity-60"></i></a>
+                    <a href="https://cs193p.sites.stanford.edu/" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-white/20 text-white font-bold text-sm hover:bg-white/5 transition-colors no-underline"><i data-lucide="graduation-cap" class="w-4 h-4"></i> Stanford CS193p <i data-lucide="external-link" class="w-3.5 h-3.5 opacity-60"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 px-4 border-t border-white/5 text-center text-neutral-600 text-sm">
+    <div class="flex items-center justify-center gap-2 mb-3">
+        <img src="Swift-logo.svg" alt="Logo" class="h-8 w-auto opacity-40">
+    </div>
+    Copyright © <span id="footer-year"></span> MM7 Inc. All rights reserved<br>
+    Designed and Developed by Mohamed Murad<br>
+    Contact +201003591727
+</footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
